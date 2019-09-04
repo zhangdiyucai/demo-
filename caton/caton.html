@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./js/jquery-3.1.1.js"></script>
+    <style>
+        *{
+         margin: 0px;
+           padding:0px;
+        }
+        body{
+            position: relative;
+            overflow:hidden
+        }
+        .containerManger{
+            position: absolute;
+            top:0px;
+            left: 0px;
+            overflow: hidden;
+        }
+        .container{
+           
+            width: 200%;
+            height: 100%;
+            /* overflow: hidden; */
+            transform: translate(-280px,-240px);  
+        }
+
+        .item{
+            box-sizing: border-box;
+            padding-top: 150px;
+            width:360px;
+            height: 1200px;
+            /* background: rgba(89, 69, 147,1); */
+            float: left;
+            transform: rotate(25deg) translate(0px,0px);    
+            overflow: hidden;
+            transition: all 0.5s ease 0s;
+            
+        }
+        .container div img{
+            margin-left:-100px;
+            margin-top:200px;
+            width:500px;
+            height: 550px;
+            transform: rotate(-25deg); 
+            transition: width 0.5s,height 0.5s,transform 0.5s;                   
+        }
+
+        .coverMap{
+            position: absolute;
+            width: 500px;
+            height:500px;
+            background: transparent;
+            z-index: 102;
+            color: white;
+            display: none;
+            right:80px;
+            top:400px;
+            transition: display 2s;
+
+        }
+        .coverMap div{
+            position: absolute;
+          
+            
+
+        }
+
+
+        .outer{
+            display: inline-block;
+            width: 130px;
+            height: 130px;
+            position:absolute;
+            background:rgba(206, 224, 151,0.5);      
+            z-index:100;
+            top:0px;
+            left:0px;
+            border-radius: 50%;
+            transition: width 0.5s,height 0.5s,display 0.5s,transform 0.5s; 
+        }
+        .outerShow{
+            width: 150px  !important;
+            height: 150px  !important;
+            transform: translate(-10px,-10px)  !important;
+
+        }
+        .inner{
+             display: inline-block;
+             width: 70px;
+             height: 70px;
+             margin-left:30px;
+             margin-top: 30px;
+             border-radius:50%;
+             background:rgba(255, 255, 255,1);
+             transition: width 0.5s,height 0.5s; 
+            
+        }
+        .innerShow{
+            width: 90px;
+            height: 90px;           
+        }
+
+        .col{
+            width: 15px;
+            height: 2px;
+            position: absolute;                       
+            left:50%;
+            top: 50%;
+            transform-origin: left top ;
+            transform: rotate(90deg) translate(-50%,-50%);
+            background: rgba(89, 69, 147,1);
+            transition: width 0.5s,height 0.5s; 
+    
+        }
+        .colShow{
+            width: 25px;
+            height: 3px;
+        }
+
+        .row{
+            width: 15px;
+            height: 2px;
+            position: absolute;           
+            left:50%;
+            top: 50%;
+            transform: translate(-50%,-50%);
+            background: rgba(89, 69, 147,1);  
+            transition: width 0.5s,height 0.5s;    
+        }
+        .rowShow{
+            width: 25px;
+            height: 3px;
+        }
+        
+        
+        .bigItem{
+            
+            width:580px;
+        }
+        .smallItem{
+            width:340px;
+        }
+        .bigimg{
+            width: 700px !important;
+            height:750px !important;
+            transform:rotate(-25deg) translate(100px,-260px) !important ;
+        }
+        .bigImg2{
+            width: 700px !important;
+            height:750px !important;
+            transform:rotate(-25deg) translate(400px,260px) !important;
+        }
+        
+        
+
+
+
+        .div{
+            position: absolute;
+            left:0;
+            top:0;
+            width:100%;
+            height: 100%;
+            border-radius: 50%;
+            border:10px solid rgba(0,0,0,0);
+            box-sizing: border-box;
+            z-index: 50;
+        }
+ 
+        .left,.right{
+            border-right-color: rgba(0,0,0,0);
+            border-bottom-color: rgba(0,0,0,0);
+            transform: rotate(-45deg);
+        }
+ 
+        #circle.hover .left{
+            border-left:10px solid #1caffc;
+            border-top:10px solid #1caffc;
+            /* animation: left-animation 5s linear; */
+        }
+        #circle.hover .right{
+            border-left:10px solid #1caffc;
+            border-top:10px solid #1caffc;
+            /* animation: right-animation 5s linear; */
+        }
+
+        #circle{
+            top:200px;
+            left:40%;
+            width:160px;
+            height: 160px;
+            border-width: 0;
+            clip:rect(0px,160px,160px,80px);
+        }
+ 
+        #circle.hover{
+            /* animation: circle-animation 5s linear; */
+        }
+ 
+        @keyframes circle-animation {
+            0%{clip:rect(0px,160px,160px,80px);}
+            100%{clip:auto;}
+        }
+ 
+        @keyframes left-animation {
+            0%{transform: rotate(-45deg);}
+            50%{transform: rotate(135deg);}
+            100%{transform: rotate(315deg);}
+        }
+ 
+        @keyframes right-animation {
+            0%{transform: rotate(-45deg);}
+            50%{transform: rotate(135deg);}
+            100%{transform: rotate(135deg);}
+        }
+
+    
+    </style>
+</head>
+<body>
+
+    <canvas id='canvas' style="position:relative;pointer-events: none ;z-index: 11111"></canvas>
+
+    <div class="coverMap" key=1>
+
+                <div style='top:10px'>Casque à réduction de bruit </div>
+                <div style="top:30px">
+                    <span>QuietComfort</span>
+                    <span class="reg">®</span>
+                    <span> 25</span>
+                </div>
+                <div style="top:50px">Bénéficiez d’un son net et puissant, avec le calme nécessaire pour profiter pleinement de votre musique.</div>
+      
+        
+    </div>
+    <div class="coverMap" key=2 style="display: none">
+
+       
+                <h1>
+                    <div>En musique et en </div>
+                    <div>contact</div>
+                </h1>
+                <p><div><span>Le casque SoundTrue</span><span>™</span><span> est conçu tout spécialement pour être </span></div>
+                    <div >utilisé avec votre iPhone et d'autres appareils Apple. La </div>
+                    <div>télécommande intégrée, située à l'arrière du microphone, vous </div>
+                    <div>permet de contrôler les fonctions audio : régler le volume, </div>
+                    <div >lancer ou mettre en pause une piste de lecture, passer à la piste </div>
+                    <div>précédente ou suivante, avancer rapidement ou reculer au sein </div>
+                </p>
+   
+        
+    </div>
+
+    <div class="div hover" id="circle">
+            <div class="right div"></div>
+            <div class="left div"></div>
+    </div>
+
+    <div class="circle">
+
+        
+        <div class="outer ">
+                <div class="inner">
+                    <div class="col"></div>
+                    <div class="row"></div>
+                </div>
+        </div>
+        <div class="outer">
+                <div class="inner">
+                    <div class="col"></div>
+                    <div class="row"></div>
+                </div>
+        </div>
+        <div class="outer">
+                <div class="inner">
+                    <div class="col"></div>
+                    <div class="row"></div>
+                </div>
+        </div>
+        <div class="outer">
+                <div class="inner">
+                    <div class="col"></div>
+                    <div class="row"></div>
+                </div>
+        </div>
+        <div class="outer">
+                <div class="inner">
+                    <div class="col"></div>
+                    <div class="row"></div>
+                </div>
+        </div>
+    </div>
+       <div class="containerManger">
+            <div class="container">
+                
+
+                <div class="item" index=1 style="background: rgba(89, 69, 147,1); ">
+                
+                    <img src="./images/assets/prod_1.png">
+                </div>
+                <div class="item" index=2 style=" background: rgba(129, 197, 216);">
+                    <img src="./images/assets/prod_2.png">
+                </div>
+                <div class="item" index=3 style=" background: rgba( 248, 189, 35);">
+                    <img src="./images/assets/prod_3.png">
+                </div>
+                <div class="item" index=4 style="background: rgba( 158, 193, 47);">
+                    <img src="./images/assets/prod_4.png">
+                </div>
+                <div class="item" index=5 style="background: rgba( 46, 195, 189);">
+                    <img src="./images/assets/prod_5.png">
+                </div>
+            </div>
+       </div>
+   
+        
+    
+</body>
+   
+<script>
+
+var canvas = document.getElementById('canvas');
+  var ctx = canvas.getContext('2d');
+
+  var w = canvas.width = window.innerWidth;
+  var h = canvas.height = window.innerHeight;
+
+  //时时跟新画布的宽高
+  window.addEventListener('resize', e => {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+  });
+
+
+canvas.style.background = 'transparent';
+
+var ctx = canvas.getContext('2d');
+
+
+
+function Block(x,y,wh,x1,y1,col) {
+
+    this.c = ctx;
+
+    this.x = x;
+
+    this.y = y;
+
+    this.w = wh;
+
+    this.h = wh;
+
+    this.x1 = x1;
+
+    this.y1 = y1;
+
+    this.col = col;
+
+    this.time = 1000;
+
+    this.id = 0;
+
+    this.draw = function () {
+
+        var _this = this;
+
+        _this.id = setInterval(function () {
+
+            _this.time -= 10;
+
+            if (_this.time <=0 ){
+
+                clearInterval(_this.id);
+
+                _this.c.clearRect(_this.x,_this.y,_this.w,_this.h);
+
+                _this.w = _this.h = 0;
+
+            }
+
+            _this.x += _this.x1;
+
+            _this.y += _this.y1;
+
+            _this.c.fillStyle = _this.col,
+
+            _this.c.clearRect(_this.x - _this.x1,_this.y-_this.y1,_this.w,_this.h);
+
+
+
+            if (_this.x >= canvas.width - _this.w || _this.x <= 0){
+
+                _this.x1 = -_this.x1;
+
+            }
+
+            if (_this.y >= canvas.height - _this.h || _this.y <= 0){
+
+                _this.y1 = -_this.y1;
+
+            }
+
+            _this.c.fillRect(_this.x,_this.y, _this.w, _this.h);
+
+
+
+        },30);
+
+    };
+
+}
+
+var a = 1;
+setInterval(() => {
+    var x = Math.floor(Math.random()*1200);
+     
+
+    var y =  Math.floor(Math.random()*660);
+    if (a++ % 6 == 0){
+        var b = new Block(randomNumber(x-10,x+10),randomNumber(y-10,y+10),randomNumber(5,30),randomNumber(-5,5),randomNumber(-5,5),'rgb('+randomNumber(0,255)+','+randomNumber(0,255)+','+randomNumber(0,255)+')');
+
+        b.draw();
+
+    }
+
+}, 10);
+
+
+
+
+// canvas.onmousemove = function (e) {
+
+  
+
+    
+
+// }
+
+//随机数函数
+
+
+
+function randomNumber(a,b) {
+
+    return parseInt(Math.random() * (b-a)) + a;
+
+}
+
+
+
+
+
+
+
+
+
+
+    var colorSize=[];
+    colorSize[0]="rgba(89, 69, 147,1)";
+    colorSize[1]="rgba(129, 197, 216)";
+    colorSize[2]="rgba( 248, 189, 35)";
+    colorSize[3]="rgba( 158, 193, 47)";
+    colorSize[4]="rgba( 46, 195, 189)";
+    // console.log(colorSize[0])
+    var mouseleaveDo=true;//确定mouseover 是否动
+    var mouseoverDo=true;
+    var mouseleaveDo2=true; //确定outer 上的mouseleave是否动
+    var mouseoverDo2=true;
+
+    var clickChange={key:false};
+    var myHeight=$(window).height();
+    var myWidth=$(window).width();
+
+    $('.containerManger').css({'height':myHeight,'width':myWidth})
+
+
+    // 由于要删除添加的属性，最好还是使用添加class  的方式，removeclass 的方式；并且最好可以使用冒泡  只要添加一个
+    // 其他几个宽度变小，一个宽度变大
+    $(document).ready(function()
+    {
+        $(".circle .outer:nth-child(1)").css({"left":'100px',"top":'225px','display':'none'})
+        $(".circle .outer:nth-child(2)").css({"left":'310px',"top":'225px','display':'none'})
+        $(".circle .outer:nth-child(3)").css({"left":'680px',"top":'225px','display':'none'})
+        $(".circle .outer:nth-child(4)").css({"left":'950px',"top":'225px','display':'none'})
+        $(".circle .outer:nth-child(5)").css({"left":'1190px',"top":'225px','display':'none'})
+     }
+    )
+
+    var n=0; //记录当前打开哪一个item
+
+    $('.container').on('mouseover','.item',function(event){   
+        if(mouseoverDo==true){
+            n=$(event.currentTarget).attr('index'); 
+            $('.item').addClass('smallItem');
+            $(event.currentTarget).removeClass('smallItem').addClass("bigItem");      
+            $(event.currentTarget.childNodes[1]).addClass("bigimg");
+            $( $(".circle .outer")[n-1]).css({'display':'inline-block'});
+        }else{
+            return false;
+        }    
+    })
+  
+    $('.container').on('mouseleave','.item',function(event){  
+        if(mouseleaveDo==true){
+            var n=$(event.currentTarget).attr('index');  
+            $('.item').removeClass('smallItem');
+            $('.item').removeClass('bigItem');       
+            $(event.currentTarget.childNodes[1]).removeClass("bigimg");
+            $( $(".circle .outer")[n-1]).css({'display':'none'});
+        }else{
+            return false;
+        }
+        
+    })
+
+     /* 1,t255,l100  2 255 l310 3 255 l680  4 255 r100   4 z55 r310  */
+    $('.outer').mouseover(function(event){
+        if(mouseoverDo2==true){
+             // console.log( $('.outer').offset().left);
+            $($(".container .item")[n-1]).trigger("mouseover");
+            $('.outer').addClass('outerShow');
+            $('.outer .inner').addClass('innerShow');
+            $('.outer .inner .col').addClass("colShow");
+            $('.outer .inner .row').addClass("rowShow");
+        }else{
+            return false;
+        }
+       
+
+    })
+    $('.outer').mouseleave(function(event){
+
+        if(mouseleaveDo2==true){
+            $('.outer').removeClass('outerShow');
+            $('.outer .inner').removeClass('innerShow');
+            $('.outer .inner .col').removeClass("colShow");
+            $('.outer .inner .row').removeClass("rowShow");
+        }else{
+            return false
+        }
+    })
+   
+// var time=1;
+
+   $('.outer').click(function(){
+  
+        // console.log('ddd')
+        
+           
+        mouseoverDo=false;
+        mouseleaveDo=false;
+        mouseleaveDo2=false;
+        mouseoverDo2=false;
+
+        var left=$(this).css('left');
+        var right=$(this).css('right');
+        
+        
+        // console.log($(this).css('left'));
+        $('#circle').css({'left':left,'top':top});
+        // $('#circle').css({'transform':'translate(-100px -10px)'});
+        $('#circle.hover').css({"animation": "circle-animation 1s linear"});
+        $(' #circle.hover .left').css({"animation":"left-animation 1s linear"});
+        $(' #circle.hover .right').css({"animation":"right-animation 1s linear"});
+        // 点击选中的那个宽度改变，斜巷扩张
+
+        $($(".container .item")[n-1]).stop(true,true).animate({
+            'width':'1080px',
+            'height':'2500px',
+            "margin-left":'-300px'
+        },300).animate({
+            'width':'2130px',
+            'height':'3000px',
+            "margin-left":'-5s00px'
+        },300);
+        // 扩张的时候去除其他未选中的图片
+       
+        $($(".container .item")[n-1].children[0]).stop(true,true).animate({},function(){
+            $($(".container .item")[n-1].children[0]).removeClass('bigimg')
+            $($(".container .item")[n-1].children[0]).addClass('bigImg2')
+        })
+
+         // 未选中的那级个item收缩，，并且改变颜色，因为选中的item 是会扩展但是不够全屏，所以更改颜色
+        //  全屏一色，再次点击之后会触发宁外几个未选中的item  做一个扩展以及收缩，导致item 移送，就像图片移动一样 
+    
+        $($(".container .item")[n-1]).nextAll().stop(true,true).animate({
+            'width':'180px'
+        },300).animate({
+            'width':'0px'
+        },300);
+        $($(".container .item")[n-1]).prevAll().stop(true,true).animate({
+            'width':'180px'
+        },300).animate({
+            'width':'0px'
+        },300);
+        setTimeout(()=>{
+            $($(".container .item")[n-1]).nextAll().css({'background': colorSize[n-1]});
+            $($(".container .item")[n-1]).prevAll().css({'background': colorSize[n-1]});
+        },600)
+
+        
+        $($(".container .item")[n-1]).nextAll().children("img").remove();
+        $($(".container .item")[n-1]).prevAll().children("img").remove();
+        $('body').css({'background': colorSize[n-1]});
+
+       clickChange.key=true; 
+       $( $('.coverMap')[0].children[0]).stop(true,true).animate({
+               'top':'-10px'
+            },300).animate({
+                'top':'10px'
+            },300)
+
+            $( $('.coverMap')[0].children[1]).stop(true,true).animate({
+               'left':'70px'
+            },200).animate({
+               'left':'-10px'
+            },100).animate({
+               'left':'30px'
+            },170)
+            .animate({
+                'left':'0px'
+            },130)
+
+
+            $( $('.coverMap')[0].children[2]).stop(true,true).animate({
+               'top':'70px'
+            },300).animate({
+                'top':'50px'
+            },300)
+   
+    // setTimeout(()=>{
+    //     $(location).prop('href', 'http://127.0.0.1:5500/testsss.html')
+    // },1000)
+   })
+
+   setTimeout(()=>{
+    console.log(clickChange.key)
+
+    changeAfter();
+  
+   },5000)
+
+//字体动画 
+var activeDo={"key":"false"};
+
+
+   function  changeAfter(){
+       if(clickChange.key==true){    
+        $( $('.coverMap')[0]).css({  "display":"inline-block"});
+             $( $('.coverMap')[0].children[0]).stop(true,true).animate({
+               'top':'-10px'
+            },300).animate({
+                'top':'10px'
+            },300)
+            $( $('.coverMap')[0].children[1]).stop(true,true).animate({
+               'left':'70px'
+            },300).animate({
+                'left':'0px'
+            },300)
+            $( $('.coverMap')[0].children[2]).stop(true,true).animate({
+               'top':'70px'
+            },300).animate({
+                'top':'50px'
+            },300)
+       }
+       activeDo.key=true;
+    //    console.log(activeDo,'ss')
+    //   active();
+
+   }
+
+//    鼠标移动之后，那图片移动,设定为图片变化之后 才能开始动 动画
+
+
+
+//     function active(){  
+//         if(activeDo.key=true){
+//             $('html').mouseover(function(e){
+//            var myHeight=$(window).height();
+//            var myWidth=$(window).width();
+//            var x=(e.clientX-myWidth/2)/5;
+//            var y=(e.clientY-myHeight/2)/5;
+//            var a=(400-x)+'px';
+//            var b=(260-y)+'px';
+//            console.log(a,b,$($(".container .item")[n-1]).children("img"))
+//            $($(".container .item")[n-1]).children("img").removeClass("bigImg2")
+//            $($(".container .item")[n-1]).children("img").css({
+//                "width": "700px" ,
+//                "height":"750px" ,
+//                "transform":"rotate(-25deg) translate(a,b) !important"
+//                })
+      
+//        })
+//         }else{
+//             return 1;
+//         }
+       
+//     }
+//     setTimeout(()=>{
+   
+
+//     active();
+  
+//    },40)
+
+    
+// $("p").mouseover(function(){
+//   $("p").css("background-color","yellow");
+// });
+// 可以滚动改变颜色和改变图片
+
+   
+
+</script>
+
+
+
+
+
+</html>
+
